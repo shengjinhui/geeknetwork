@@ -60,11 +60,10 @@ void loopClientSocket(int clientSocket,struct sockaddr_in clientAddr){
             }
         }
         sendResult = send(clientSocket,sendBuffer,strlen(sendBuffer),0);
-        Logging("debug","data send to client  : %s , send result : %d ",sendBuffer,sendResult);
-        if(isEnding){
-            close(clientSocket);
-        }
+        Logging("debug","data send to client  : %s , send result : %d ",sendBuffer,sendResult);    
     }
+
+    close(clientSocket);
 }
 
 int main(int argc,char** argv){

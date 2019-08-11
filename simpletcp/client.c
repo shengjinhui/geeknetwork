@@ -32,10 +32,7 @@ void loopClientSocket(int clientSocket){
         bzero(sendBuffer,BUFFER_LEN);
         recvStatus = recv(clientSocket,recvBuffer,BUFFER_LEN,0);
         Logging("debug","get message from server: %s ",recvBuffer);
-        if(strncmp("bye",recvBuffer,3) == 0 ){
-            break;
-        }
-        if(recvStatus == 0) {
+        if(strncmp("bye",recvBuffer,3) == 0  || recvStatus == 0){
             break;
         }
         printf("Write Some:>");
@@ -45,6 +42,7 @@ void loopClientSocket(int clientSocket){
         Logging("debug","You input > %s",sendBuffer);
         send(clientSocket,sendBuffer,strlen(sendBuffer),0);
     }
+    close(clientSocket);
 }
 
 int main(int argc,char** argv){
