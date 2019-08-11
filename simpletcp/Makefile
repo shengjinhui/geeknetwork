@@ -1,10 +1,10 @@
 
 all:client server
 
-logging:logging.c logging.h
+logging:logging.c logging.h simpletcp.h
 	gcc -c logging.c
 
-server:server.c logging
+server:server.c logging simpletcp.h
 	gcc -o server server.c logging.o
 
 client:client.c logging

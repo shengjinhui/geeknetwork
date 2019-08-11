@@ -1,16 +1,6 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#include <string.h>
+#include "simpletcp.h"
 
-
-#include "logging.h"
-
-#define PORT 9009
-
+//创建连接到服务器端的socket
 int connectServer(char* host,int port){
     int clientSocket ;
     int connectResult;
@@ -31,15 +21,16 @@ int connectServer(char* host,int port){
     return clientSocket;
 }
 
+//循环处理客户端的socket
 void loopClientSocket(int clientSocket){
-    char sendBuffer[1024];
-    char recvBuffer[1024];
+    char sendBuffer[BUFFER_LEN];
+    char recvBuffer[BUFFER_LEN];
     int recvStatus,sendStatus;
     send(clientSocket,"-",1,0);
     while(1){
-        bzero(recvBuffer,1024);
-        bzero(sendBuffer,1024);
-        recvStatus = recv(clientSocket,recvBuffer,1024,0);
+        bzero(recvBuffer,BUFFER_LEN);
+        bzero(sendBuffer,BUFFER_LEN);
+        recvStatus = recv(clientSocket,recvBuffer,BUFFER_LEN,0);
         Logging("debug","get message from server: %s ",recvBuffer);
         if(strncmp("bye",recvBuffer,3) == 0 ){
             break;
@@ -56,7 +47,7 @@ void loopClientSocket(int clientSocket){
     }
 }
 
-int main(){
+int main(int argc,char** argv){
     int clientSocket = connectServer("127.0.0.1",PORT); 
     if(clientSocket != -1){
         loopClientSocket(clientSocket);

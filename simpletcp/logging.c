@@ -4,7 +4,7 @@
 #include <string.h>
 #include "logging.h"
 
-
+// 日志输出函数，类似printf
 void Logging(const char* level,const char *format, ...){
     printf(" [+][%s][%s] ",asctimeEx(),level);
 	va_list arg;

@@ -1,15 +1,6 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#include <string.h>
-#include<unistd.h>
+#include "simpletcp.h"
 
-#include "logging.h"
-
-#define PORT 9009
-
+//创建服务器端的socket
 int createServerSocket(char* ip,int port){
     struct sockaddr_in name;
     int sock;
@@ -40,8 +31,8 @@ int createServerSocket(char* ip,int port){
 
 // 服务器端一定要先接收数据
 void loopClientSocket(int clientSocket,struct sockaddr_in clientAddr){
-    char sendBuffer[1024] = {'\0'};
-    char recvBuffer[1024] = {'\0'};
+    char sendBuffer[BUFFER_LEN] = {'\0'};
+    char recvBuffer[BUFFER_LEN] = {'\0'};
     int recvResult ;
     int sendResult;
     uint8_t isEnding = 0;
@@ -50,8 +41,8 @@ void loopClientSocket(int clientSocket,struct sockaddr_in clientAddr){
     // strcpy(sendBuffer,"hello geeknetwork server : ");
     // send(clientSocket,sendBuffer,strlen(sendBuffer),0);
     while(isEnding != 1) {
-        bzero(sendBuffer,1024);
-        bzero(recvBuffer,1024);
+        bzero(sendBuffer,BUFFER_LEN);
+        bzero(recvBuffer,BUFFER_LEN);
         recvResult = recv(clientSocket,recvBuffer,1024,0);
         if(recvResult == -1){
             break;
