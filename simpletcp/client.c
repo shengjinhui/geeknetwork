@@ -48,7 +48,10 @@ void loopClientSocket(int clientSocket){
             break;
         }
         printf("Write Some:>");
-        scanf("%s",sendBuffer);
+        scanf("%[^\n]%*c",sendBuffer);
+        // 输入内容，遇到回车键结束，并且舍弃最后的回车键。
+        sendBuffer[strlen(sendBuffer)] = '\0';
+        Logging("debug","You input > %s",sendBuffer);
         send(clientSocket,sendBuffer,strlen(sendBuffer),0);
     }
 }
