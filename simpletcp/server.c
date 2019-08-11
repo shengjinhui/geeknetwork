@@ -43,8 +43,9 @@ void loopClientSocket(int clientSocket,struct sockaddr_in clientAddr){
     while(isEnding != 1) {
         bzero(sendBuffer,BUFFER_LEN);
         bzero(recvBuffer,BUFFER_LEN);
-        recvResult = recv(clientSocket,recvBuffer,1024,0);
+        recvResult = recv(clientSocket,recvBuffer,1023,0);
         if(recvResult == -1){
+            Logging("debug","recvResult = -1");
             break;
         }
         Logging("debug","data get from client : %s , receive result : %d ",recvBuffer,recvResult);
@@ -53,7 +54,10 @@ void loopClientSocket(int clientSocket,struct sockaddr_in clientAddr){
             isEnding = 1;
             strcpy(sendBuffer,"bye, welcome back.\n");
         } else {
-            if(recvResult != 0 ) {
+            if(recvResult != 0 ) {  
+                if(recvResult >= BUFFER_LEN){
+                    recvBuffer[BUFFER_LEN-1] = '\0';
+                }
                 strcpy(sendBuffer,recvBuffer);
             } else {
                 strcpy(sendBuffer,"empty");
